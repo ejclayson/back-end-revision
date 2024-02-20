@@ -6,17 +6,19 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+//@Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+//    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
 
     private String username;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String mobile;
-    private String password;
+    String firstname;
+    String lastname;
+    String email;
+    String mobile;
+    String password;
 
     @JsonIgnoreProperties("user")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -38,13 +40,13 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public String getUsername() {
         return username;
