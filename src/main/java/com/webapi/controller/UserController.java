@@ -76,22 +76,23 @@ public ResponseEntity<Object> registerUser(@RequestBody Map<String, String> body
 
 
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
-        String username = loginRequest.getUsername();
-        String password = loginRequest.getPassword();
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    public ResponseEntity<Object> loginUser(@RequestBody Map<String, String> body) throws UserException{
+        String username = body.get("username");
+        String password = body.get("password");
 
-        if (username != null && password != null) {
-            Optional<User> userOptional = userRepository.findByUsernameAndPassword(username, password);
+        Optional<User> userOptional = userRepository.findByUsernameAndPassword(username, password);
 
-            if (userOptional.isPresent()) {
-                return new ResponseEntity<>("Login successful", HttpStatus.OK);
+        /*
+        *  if (!userService.findByUsername(username).isPresent() &&
+                !userService.findByEmail(email).isPresent() &&
+                !userService.findByMobile(mobile).isPresent()) {
+        * */
+            if (!userOptional.isEmpty()) {
+                return new ResponseEntity<>(true, HttpStatus.CREATED);
             } else {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(false, HttpStatus.CREATED);
             }
-        } else {
-            return new ResponseEntity<>("Invalid input", HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping(path = "/all")
